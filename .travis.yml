@@ -9,9 +9,9 @@ addons:
     sources:
       - ubuntu-toolchain-r-test
     packages:
-      - gcc-4.9
-      - g++-4.9
-      - gfortran-4.9
+      - gcc-6
+      - g++-6
+      - gfortran-6
       - libgmp-dev
       - libgsl0-dev
 env:
@@ -39,9 +39,9 @@ before_install:
   # we need a very fresh version of survival for Hmisc, needs be done early in the script
   - Rscript -e 'install.packages("survival")'
   - mkdir $HOME/bin
-  - ln -s $(which gcc-4.9) $HOME/bin/gcc
-  - ln -s $(which g++-4.9) $HOME/bin/g++
-  - ln -s $(which gfortran-4.9) $HOME/bin/gfortran
+  - ln -s $(which gcc-6) $HOME/bin/gcc
+  - ln -s $(which g++-6) $HOME/bin/g++
+  - ln -s $(which gfortran-6) $HOME/bin/gfortran
   - export PATH=$HOME/bin:$PATH
   - echo $LD_LIBRARY_PATH
   - echo $LIBRARY_PATH

@@ -42,6 +42,7 @@ filterLearnerTable = function(tab = getLearnerTable(), types = character(0L), pr
     tab = tab[i]
   }
 
+
   return(tab)
 }
 
@@ -114,7 +115,8 @@ listLearners.default  = function(obj = NA_character_, properties = character(0L)
 
 #' @export
 #' @rdname listLearners
-listLearners.character  = function(obj = NA_character_, properties = character(0L), quiet = TRUE, warn.missing.packages = TRUE, check.packages = TRUE, create = FALSE) {
+listLearners.character  = function(obj = NA_character_, properties = character(0L),
+  quiet = TRUE, warn.missing.packages = TRUE, check.packages = TRUE, create = FALSE) {
   if (!isScalarNA(obj))
     assertSubset(obj, listTaskTypes())
   tab = getLearnerTable()

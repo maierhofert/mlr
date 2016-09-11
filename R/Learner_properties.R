@@ -84,4 +84,5 @@ listLearnerProperties = function(type = "any") {
   allProps = c(listTaskTypes(), "any")
   assertSubset(type, allProps)
   mlr$learner.properties[[type]]
+
 }

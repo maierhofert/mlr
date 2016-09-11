@@ -32,6 +32,7 @@ The following types are returned, depending on task type:
 }
 \seealso{
 Other predict: \code{\link{asROCRPrediction}},
+  \code{\link{forecast.WrappedModel}},
   \code{\link{getPredictionProbabilities}},
   \code{\link{plotViperCharts}},
   \code{\link{predict.WrappedModel}},

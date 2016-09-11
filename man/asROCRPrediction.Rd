@@ -17,7 +17,8 @@ Converts predictions to a format package ROCR can handle.
 Other roc: \code{\link{calculateROCMeasures}},
   \code{\link{plotViperCharts}}
 
-Other predict: \code{\link{getPredictionProbabilities}},
+Other predict: \code{\link{forecast.WrappedModel}},
+  \code{\link{getPredictionProbabilities}},
   \code{\link{getPredictionResponse}},
   \code{\link{plotViperCharts}},
   \code{\link{predict.WrappedModel}},

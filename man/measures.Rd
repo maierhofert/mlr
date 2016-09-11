@@ -8,6 +8,7 @@
 \alias{timepredict}
 \alias{timeboth}
 \alias{sse}
+\alias{mase}
 \alias{measureSSE}
 \alias{mse}
 \alias{measureMSE}
@@ -123,6 +124,7 @@
 \alias{G1}
 \alias{G2}
 \alias{silhouette}
+\alias{multivar.mase}
 \title{Performance measures.}
 \format{none}
 \usage{
@@ -135,6 +137,8 @@ timepredict
 timeboth
 
 sse
+
+none
 
 measureSSE(truth, response)
 
@@ -365,6 +369,8 @@ G1
 G2
 
 silhouette
+
+none
 }
 \arguments{
 \item{truth}{[\code{factor}]\cr
