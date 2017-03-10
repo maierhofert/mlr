@@ -4,10 +4,10 @@ test_that("fcregr_nnetar", {
 
   parset.list = list(
     list(),
-    list(p = 3),
-    list(p = 2, size = 4),
-    list(scale.inputs = FALSE, p = 3),
-    list(Hess = TRUE, size = 3, decay = .01)
+    list(lambda = 3),
+    list(scale.inputs = FALSE, size = 4),
+    list(skip = TRUE, scale.inputs = FALSE),
+    list(P = 1, size = 3, decay = .01)
   )
   old.predicts.list = list()
 
@@ -36,10 +36,10 @@ test_that("fcregr_nnetar", {
 test_that("fcregr_nnetar_update",{
   parset.list = list(
     list(),
-    list(p = 3),
-    list(p = 2, size = 4),
-    list(scale.inputs = FALSE, p = 3),
-    list(Hess = TRUE, size = 3, decay = .01)
+    list(lambda = 3),
+    list(scale.inputs = FALSE, size = 4),
+    list(skip = TRUE, scale.inputs = FALSE),
+    list(P = 1, size = 3, decay = .01)
   )
   old.predicts.list = list()
 

@@ -220,7 +220,7 @@ predictLearner.StackedLearner = function(.learner, .model, .newdata, ...) {
 
   # get task information (classif)
   td = .model$task.desc
-  checkStackSupport(td)
+  type = checkStackSupport(td)
 
   # predict prob vectors with each base model
   if (.learner$method != "compress") {
@@ -330,7 +330,7 @@ averageBaseLearners = function(learner, task) {
 # stacking where we predict the training set in-sample, then super-learn on that
 stackNoCV = function(learner, task) {
   td = getTaskDescription(task)
-  checkStackSupport(td)
+  type = checkStackSupport(td)
   bls = learner$base.learners
   use.feat = learner$use.feat
   base.models = probs = vector("list", length(bls))
@@ -373,7 +373,7 @@ stackNoCV = function(learner, task) {
 # stacking where we crossval the training set with the base learners, then super-learn on that
 stackCV = function(learner, task) {
   td = getTaskDescription(task)
-  checkStackSupport(td)
+  type = checkStackSupport(td)
   bls = learner$base.learners
   use.feat = learner$use.feat
   # cross-validate all base learners and get a prob vector for the whole dataset for each learner
@@ -427,7 +427,7 @@ hillclimbBaseLearners = function(learner, task, replace = TRUE, init = 0, bagpro
   assertInt(bagtime, lower = 1)
 
   td = getTaskDescription(task)
-  checkStackSupport(td)
+  type = checkStackSupport(td)
   if (is.null(metric)) {
     if (type == "regr" || type == "fcregr") {
       metric = function(pred, true) mean((pred-true)^2)
@@ -549,7 +549,7 @@ compressBaseLearners = function(learner, task, parset = list()) {
   pseudo.data = data.frame(pseudo.data, target = pseudo.target$data$response)
 
   td = ensemble.model$task.desc
-  checkStackSupport(td)
+  type = checkStackSupport(td)
 
   if (type == "regr" | type == "fcregr" | type == "mfcregr") {
     new.task = makeRegrTask(data = pseudo.data, target = "target")
@@ -730,7 +730,7 @@ getPseudoData = function(.data, k = 3, prob = 0.1, s = NULL, ...) {
 # stacking where we growing crossval the training set with the base learners, then super-learn on that
 stackGrowingCV = function(learner, task) {
   td = getTaskDescription(task)
-  checkStackSupport(td)
+  type = checkStackSupport(td)
   bls = learner$base.learners
   use.feat = learner$use.feat
 
@@ -810,4 +810,5 @@ checkStackSupport = function(td){
   } else {
     stop(catf("Learners of type %s are not supported", td$type))
   }
+  type
 }

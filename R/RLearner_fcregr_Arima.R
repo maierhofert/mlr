@@ -40,7 +40,7 @@ makeRLearner.fcregr.Arima = function() {
       makeIntegerLearnerParam(id = "npaths", default = 5000, when = "predict"),
       # simulate params
       makeIntegerLearnerParam(id = "nsim", lower = 0L, default = expression(length(object$x))),
-      makeIntegerLearnerParam(id = "seed", default = NULL),
+      makeIntegerLearnerParam(id = "seed", default = NULL, special.vals = list(NULL)),
       makeLogicalLearnerParam(id = "future", default = TRUE),
       keys = c("x", "object", "arma")
     ),

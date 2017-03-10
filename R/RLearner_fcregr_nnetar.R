@@ -10,7 +10,7 @@ makeRLearner.fcregr.nnetar = function() {
       # no default for size
       makeIntegerLearnerParam(id = "size", lower = 0L),
       makeIntegerLearnerParam(id = "repeats", lower = 1L, default = 20L),
-      makeNumericLearnerParam(id = "lambda"),
+      makeNumericLearnerParam(id = "lambda", default = NULL, special.vals = list(NULL)),
       makeUntypedLearnerParam(id = "model", default = NULL),
       makeLogicalLearnerParam(id = "scale.inputs", default = TRUE),
       # nnet params
@@ -30,22 +30,22 @@ makeRLearner.fcregr.nnetar = function() {
       makeNumericLearnerParam(id = "reltol", default = 1.0e-8),
       # predict params
       makeIntegerLearnerParam(id = "h", lower = 0L, default = expression(ifelse(object$m > 1, 2 * object$m, 10)),
-                              when = "predict", tunable = FALSE),
-      makeLogicalLearnerParam(id = "PI", default = FALSE, tunable = FALSE),
+                             when = "predict", tunable = FALSE),
+      makeLogicalLearnerParam(id = "PI", default = FALSE, tunable = FALSE, when = "predict"),
       makeNumericVectorLearnerParam(id = "level", len = NA, default = c(80,95), when = "predict", tunable = FALSE),
       makeLogicalLearnerParam(id = "bootstrap", default = FALSE, when = "predict", tunable = FALSE),
       makeIntegerLearnerParam(id = "npaths", default = 1000, when = "predict"),
       makeUntypedLearnerParam(id = "innov", default = NULL, when = "predict"),
       # simulate params
-      makeIntegerLearnerParam(id = "nsim", lower = 0L, default = expression(length(object$x))),
-      makeIntegerLearnerParam(id = "seed", default = NULL),
-      makeLogicalLearnerParam(id = "future", default = TRUE),
-      key = c("object", "m", "x")
+      makeIntegerLearnerParam(id = "nsim", lower = 0L, default = expression(length(object$x)), when = "predict"),
+      makeIntegerLearnerParam(id = "seed", default = NULL, special.vals = list(NULL), when = "predict"),
+      makeLogicalLearnerParam(id = "future", default = TRUE, when = "predict"),
+      keys = c("object", "m", "x")
       ),
     properties = c("numerics", "quantile"),
     name = "Neural Network Time Series Forecasts",
     short.name = "nnetar",
-    note = "All variables besides the target will be passed to the xreg argument."
+    note = "All variables besides the target will be passed to the xreg argument. Because R performs partial mapping on arguments, argument values should be passed through par.vals"
   )
 }
 #'@export
@@ -75,19 +75,19 @@ trainLearner.fcregr.nnetar = function(.learner, .task, .subset, .weights = NULL,
 updateLearner.fcregr.nnetar = function(.learner, .model, .newdata, .task, .truth, .weights = NULL, ...) {
   target = getTaskTargetNames(.task)
   data = ts(.truth, start = 1, frequency = .task$task.desc$frequency)
-  if (is.null(weights)){
-    if (ncol(data$data) != 0){
-      data$data = ts(data$data, start = 1, frequency = .task$task.desc$frequency)
-      forecast::nnetar(y = data$target,xreg = data$data, model = .model$learner.model, ...)
+  if (is.null(.weights)){
+    if (ncol(.newdata) != 0){
+      .newdata = ts(.newdata, start = 1, frequency = .task$task.desc$frequency)
+      forecast::nnetar(y = data,xreg = .newdata, model = .model$learner.model, ...)
     } else {
-      forecast::nnetar(y = data$target, model = .model$learner.model, ...)
+      forecast::nnetar(y =data, model = .model$learner.model, ...)
     }
   } else {
-    if (ncol(data$data) != 0){
-      data$data = ts(data$data, start = 1, frequency = .task$task.desc$frequency)
-      forecast::nnetar(y = data$target,xreg = data$data, model = .model$learner.model, weights = .weights, ...)
+    if (ncol(.newdata) != 0){
+      newdata = ts(.newdata, start = 1, frequency = .task$task.desc$frequency)
+      forecast::nnetar(y = data,xreg = newdata, model = .model$learner.model, weights = .weights, ...)
     } else {
-      forecast::nnetar(y = data$target, model = .model$learner.model, weights = .weights, ...)
+      forecast::nnetar(y = data, model = .model$learner.model, weights = .weights, ...)
     }
   }
 }
@@ -98,10 +98,16 @@ predictLearner.fcregr.nnetar = function(.learner, .model, .newdata, ...) {
   model.td = getTaskDescription(.model)
 
   if (all(model.td$n.feat == 0)){
-    p = forecast::forecast(.model$learner.model, ...)
+    if (se.fit)
+      p = forecast::forecast(.model$learner.model, PI = TRUE, ...)
+    else
+      p = forecast::forecast(.model$learner.model, ...)
   } else {
     .newdata = ts(.newdata, start = 1, frequency = .model$task.desc$frequency)
-    p = forecast::forecast(.model$learner.model, xreg = .newdata, ...)
+    if (se.fit)
+      p = forecast::forecast(.model$learner.model, PI = TRUE, xreg = .newdata, ...)
+    else
+      p = forecast::forecast(.model$learner.model, xreg = .newdata, ...)
   }
   if (!se.fit){
     p = as.numeric(p$mean)

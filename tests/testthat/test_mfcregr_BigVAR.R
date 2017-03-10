@@ -39,12 +39,12 @@ test_that("mfcregr_BigVAR", {
     old.predicts.list[[i]] = p
   }
 
-  parset.list[[1]]$n.ahead = 1L
-  parset.list[[2]]$n.ahead = 1L
-  parset.list[[3]]$n.ahead = 1L
-  parset.list[[4]]$n.ahead = 1L
-  parset.list[[5]]$n.ahead = 1L
-
+  for (i in 1:length(parset.list)){
+    parset.list[[i]]$n.ahead = 1L
+    parset.list[[i]] = list(par.vals = parset.list[[i]])
+    parset.list[[i]]$predict.type = "response"
+    parset.list[[i]]$predict.threshold = NULL
+  }
   testSimpleParsets("mfcregr.BigVAR", mfcregr.xts, mfcregr.target,
                     mfcregr.train.inds, old.predicts.list, parset.list)
 })

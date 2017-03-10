@@ -9,8 +9,8 @@ makeRLearner.fcregr.arfima = function() {
       makeDiscreteLearnerParam(id = "estim", values = c("mle","ls"), default = "mle"),
       makeUntypedLearnerParam(id = "model", default = NULL),
       # auto.arima params
-      makeIntegerLearnerParam(id = "d", lower = 0, upper = Inf, default = NA_integer_, special.vals = list(NA_integer_)),
-      makeIntegerLearnerParam(id = "D", lower = 0, upper = Inf, default = NA_integer_, special.vals = list(NA_integer_)),
+      makeIntegerLearnerParam(id = "d", lower = 0, upper = Inf),
+      makeIntegerLearnerParam(id = "D", lower = 0, upper = Inf),
       makeIntegerLearnerParam(id = "max.p", lower = 0, upper = Inf, default = 5),
       makeIntegerLearnerParam(id = "max.q", lower = 0, upper = Inf, default = 5),
       makeIntegerLearnerParam(id = "max.P", lower = 0, upper = Inf, default = 2),
@@ -34,7 +34,7 @@ makeRLearner.fcregr.arfima = function() {
       makeLogicalLearnerParam(id = "allowdrift", default = TRUE),
       makeLogicalLearnerParam(id = "allowmean", default = TRUE),
       makeNumericLearnerParam(id = "lambda", default = NULL, special.vals = list(NULL), when = "both"),
-      makeLogicalLearnerParam(id = "biasadj", default = FALSE, when = "both"),
+      makeLogicalLearnerParam(id = "biasadj", default = FALSE, when = "train"),
       makeIntegerLearnerParam(id = "num.cores", lower = 0, upper = Inf, tunable = FALSE, default = 2),
       # arima params
       makeLogicalLearnerParam(id = "transform.pars", default = TRUE),
@@ -55,7 +55,7 @@ makeRLearner.fcregr.arfima = function() {
       makeLogicalLearnerParam(id = "fan", default = FALSE, when = "predict", tunable = FALSE),
       # simulate params
       makeIntegerLearnerParam(id = "nsim", lower = 0L, default = expression(length(object$n))),
-      makeIntegerLearnerParam(id = "seed", default = NULL),
+      makeIntegerLearnerParam(id = "seed", default = NULL, special.vals = list(NULL)),
       makeLogicalLearnerParam(id = "future", default = TRUE),
       keys = c("x", "object", "arma", "n")
     ),

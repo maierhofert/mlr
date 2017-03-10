@@ -6,7 +6,7 @@ makeRLearner.mfcregr.BigVAR = function() {
     par.set = makeParamSet(
       #constructModel params
       # p, struct, and gran have no default
-      makeIntegerLearnerParam("p", lower = 1L),
+      makeIntegerLearnerParam("p", lower = 1L, default = 1L),
       makeDiscreteLearnerParam("struct", values = c("Basic", "Lag","SparseLag","SparseOO",
                                "OwnOther", "EFX", "HVARC", "HVAROO", "HVARELEM", "Tapered")),
       makeIntegerVectorLearnerParam("gran", len = 2L, lower = 1L),
@@ -24,19 +24,19 @@ makeRLearner.mfcregr.BigVAR = function() {
       makeLogicalLearnerParam("recursive", default = FALSE),
       makeUntypedLearnerParam("C", default = as.double(NULL)),
       # predictor vars
-      makeIntegerLearnerParam("n.ahead", lower = 1, default = 1, when = "predict")
+      makeIntegerLearnerParam("n.ahead", lower = 1, default = 1, when = "predict"),
+      keys = "Y"
     ),
     properties = c("numerics"),
     name = "Vector AutoRegression Models with Endogeneous and Exogenous Variables",
     short.name = "BigVAR",
-    note = "dates are automatically passed to the date argument"
+    note = "Because of argument p and R's partial matching, arguments in makeLearner must be passed to par.vals as a list. dates are automatically passed to the date argument."
   )
 }
 
 #'@export
 trainLearner.mfcregr.BigVAR = function(.learner, .task, .subset, .weights = NULL, ...) {
-  dots = list(...)
-  data  = getTaskData(.task,.subset)
+  data  = getTaskData(.task, .subset)
   dates = rownames(data)
   data  = as.matrix(data)
   model = BigVAR::constructModel(Y = data, ..., dates = dates)
@@ -50,7 +50,7 @@ predictLearner.mfcregr.BigVAR = function(.learner, .model, .newdata, ...){
     BigVAR::predict(.model$learner.model, i)
   })
   p[[1]] = t(p[[1]])
-  p = rbindlist(p)
+  p = do.call(rbind,p)
   colnames(p) = .model$task.desc$col.names
   return(p)
 }

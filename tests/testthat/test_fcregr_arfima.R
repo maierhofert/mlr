@@ -4,10 +4,10 @@ test_that("fcregr_arfima", {
 
   parset.list = list(
     list(),
-    list(drange = c(0, .5), lambda=numeric(1)),
-    list(max.p = 5, max.q = 5, max.d = 3, start.p = 1, lambda=numeric(1)),
-    list(max.p = 2, start.p = 1, seasonal = FALSE, lambda=numeric(1)),
-    list(biasadj = TRUE, allowdrift = FALSE, allowmean = FALSE, lambda=numeric(1))
+    list(drange = c(0, .5)),
+    list(max.p = 5, max.q = 5, max.d = 3, start.p = 1),
+    list(max.p = 2, start.p = 1, seasonal = FALSE),
+    list(biasadj = TRUE, allowdrift = FALSE, allowmean = FALSE)
   )
   old.predicts.list = list()
 

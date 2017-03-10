@@ -47,7 +47,7 @@ testSimple = function(t.name, df, target, train.inds, old.predicts, parset = lis
   train = df[inds,]
   test = df[-inds,]
 
-  lrn = do.call("makeLearner", c(list(t.name), parset))
+  lrn = do.call("makeLearner", c(list(t.name), parset ))
   # FIXME this heuristic will backfire eventually
   if (length(target) == 0)
     task = makeClusterTask(data = df)

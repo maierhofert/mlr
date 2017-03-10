@@ -14,20 +14,20 @@ makeRLearner.fcregr.garch = function() {
       makeIntegerVectorLearnerParam("garchOrder",
                                     len = 2L,
                                     lower = 1L,
-                                    default = 1L),
+                                    default = c(1,1)),
       makeDiscreteLearnerParam("submodel",
                                values = c("GARCH", "TGARCH",
                                           "AVGARCH", "NGARCH",
                                           "NAGARCH", "APARCH",
                                           "GJRGARCH", "ALL-GARCH", NULL),
                                requires = quote(model == "fGARCH"),
-                               default = NULL),
+                               default = "GARCH"),
       # FIXME: external.regressors exists in both variance.model and mean.model...
       makeUntypedLearnerParam(id = "external.regressors", default = NULL),
       makeLogicalLearnerParam("variance.targeting", default = FALSE),
       ## END: variance.model
       ## BEGIN: mean.model
-      makeIntegerVectorLearnerParam("armaOrder", len = 2L, lower = 1L, default = 1L),
+      makeIntegerVectorLearnerParam("armaOrder", len = 2L, lower = 1L, default = c(1,1)),
       makeLogicalLearnerParam("include.mean", default = TRUE),
       makeLogicalLearnerParam("archm", default = FALSE),
       makeDiscreteLearnerParam("archpow", values = c(1L,2L), default = 1L),

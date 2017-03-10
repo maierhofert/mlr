@@ -16,7 +16,7 @@ makeRLearner.fcregr.ets = function() {
                                           "ZZM", "ANZ", "MNZ", "ZNZ", "AAZ",
                                           "MAZ", "ZAZ", "AMZ", "MMZ", "ZMZ",
                                           "AZZ", "MZZ", "ZZZ")),
-      makeLogicalLearnerParam(id = "damped", default = NULL, tunable = TRUE),
+      makeLogicalLearnerParam(id = "damped", default = NULL, tunable = TRUE, special.vals = list(NULL)),
       makeNumericLearnerParam(id = "alpha", default = NULL, special.vals = list(NULL)),
       makeNumericLearnerParam(id = "beta", default = NULL, special.vals = list(NULL)),
       makeNumericLearnerParam(id = "gamma", default = NULL, special.vals = list(NULL)),
@@ -44,7 +44,7 @@ makeRLearner.fcregr.ets = function() {
       makeIntegerLearnerParam(id = "npaths", default = 5000, when = "predict"),
       # simulate params
       makeIntegerLearnerParam(id = "nsim", lower = 0L, default = expression(length(object$x))),
-      makeIntegerLearnerParam(id = "seed", default = NULL),
+      makeIntegerLearnerParam(id = "seed", default = NULL, special.vals = list(NULL)),
       makeLogicalLearnerParam(id = "future", default = TRUE),
       keys = c("x", "object", "m")
     ),

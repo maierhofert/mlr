@@ -3,8 +3,8 @@ makeRLearner.fcregr.auto.arima = function() {
     cl = "fcregr.auto.arima",
     package = "forecast",
     par.set = makeParamSet(
-      makeIntegerLearnerParam(id = "d", lower = 0, upper = Inf, default = NA_integer_, special.vals = list(NA_integer_)),
-      makeIntegerLearnerParam(id = "D", lower = 0, upper = Inf, default = NA_integer_, special.vals = list(NA_integer_)),
+      makeIntegerLearnerParam(id = "d", lower = 0, upper = Inf),
+      makeIntegerLearnerParam(id = "D", lower = 0, upper = Inf),
       makeIntegerLearnerParam(id = "max.p", lower = 0, upper = Inf, default = 5),
       makeIntegerLearnerParam(id = "max.q", lower = 0, upper = Inf, default = 5),
       makeIntegerLearnerParam(id = "max.P", lower = 0, upper = Inf, default = 2),
@@ -52,7 +52,7 @@ makeRLearner.fcregr.auto.arima = function() {
       makeIntegerLearnerParam(id = "npaths", default = 5000, when = "predict"),
       # simulate params
       makeIntegerLearnerParam(id = "nsim", lower = 0L, default = expression(length(object$x))),
-      makeIntegerLearnerParam(id = "seed", default = NULL),
+      makeIntegerLearnerParam(id = "seed", default = NULL, special.vals = list(NULL)),
       makeLogicalLearnerParam(id = "future", default = TRUE),
       keys = c("x", "object", "arma")
     ),

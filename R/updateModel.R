@@ -41,18 +41,13 @@ updateModel = function(object, task, newdata, subset, weights = NULL, ...) {
 
   if (missing(newdata))
     stop("No new data supplied")
-
+  assertClass(task, classes = "Task")
+  size = getTaskSize(task)
+  if (xts::is.xts(newdata))
+    newdata = data.frame(row.names = index(newdata), newdata)
+  assertDataFrame(newdata, min.rows = 1L)
   size = nrow(newdata)
-  # FIXME: cleanup if cases
-  if (missing(newdata)) {
-    assertClass(task, classes = "Task")
-    size = getTaskSize(task)
-  } else {
-    if (xts::is.xts(newdata))
-      newdata = data.frame(row.names = index(newdata), newdata)
-    assertDataFrame(newdata, min.rows = 1L)
-    size = nrow(newdata)
-  }
+
   if (missing(subset)) {
     subset = seq_len(size)
   } else {

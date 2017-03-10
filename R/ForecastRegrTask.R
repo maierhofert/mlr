@@ -5,8 +5,8 @@
 #' @rdname Task
 #' @importFrom zoo index coredata
 makeForecastRegrTask = function(id = deparse(substitute(data)), data, target,
-                                weights = NULL, blocking = NULL, fixup.data = "warn",
-                                check.data = TRUE, frequency = 1L) {
+                                weights = NULL, blocking = NULL, frequency = 1L, fixup.data = "warn",
+                                check.data = TRUE) {
   assertString(id)
   assertClass(data,"xts")
   assertString(target)
@@ -27,11 +27,11 @@ makeForecastRegrTask = function(id = deparse(substitute(data)), data, target,
     assertNumeric(data[[target]], any.missing = FALSE, finite = TRUE, .var.name = target)
   }
 
-  task$task.desc = makeTaskDesc.ForecastRegrTask(id, data, target, weights, frequency, blocking)
+  task$task.desc = makeForecastRegrTaskDesc(id, data, target, weights, blocking, frequency)
   addClasses(task, c("ForecastRegrTask", "TimeTask"))
 }
 
-makeTaskDesc.ForecastRegrTask = function(id, data, target, weights, frequency, blocking) {
+makeForecastRegrTaskDesc = function(id, data, target, weights, blocking, frequency) {
   td = makeTaskDescInternal("fcregr", id, data, target, weights, blocking)
   td$dates = c(rownames(data)[1],rownames(data)[nrow(data)])
   td$frequency = frequency

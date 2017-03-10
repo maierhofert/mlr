@@ -50,16 +50,16 @@ makeMultiForecastRegrTask = function(id = deparse(substitute(data)), data, targe
     lapply(data,assertNumeric, any.missing = FALSE, finite = TRUE)
   }
 
-  task$task.desc = makeTaskDesc.MultiForecastRegrTask(id, data, target, weights, frequency, blocking)
+  task$task.desc = makeMultiForecastRegrTaskDesc(id, data, target, weights, blocking, frequency)
   addClasses(task, c("MultiForecastRegrTask","TimeTask"))
 }
 
-makeTaskDesc.MultiForecastRegrTask = function(id, data, target, weights, frequency, blocking) {
+makeMultiForecastRegrTaskDesc = function(id, data, target, weights, blocking, frequency) {
   td = makeTaskDescInternal("mfcregr", id, data, target, weights, blocking)
   td$dates = c(rownames(data)[1], rownames(data)[nrow(data)])
   td$frequency = frequency
   td$col.names = colnames(data)
-  addClasses(td, c("TaskDescMultiForecastRegr", "TaskDescSupervised"))
+  addClasses(td, c("MultiForecastRegrTaskDesc", "SupervisedTaskDesc"))
 }
 
 
